@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { UserId } from '@/types/message';
-import GeminiStar from './GeminiStar';
+import Image from 'next/image';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog';
 import { useAuth } from '@/context/AuthContext';
 
@@ -40,8 +40,8 @@ export default function ChatHeader({ partnerOnline, currentUser, onClearAll }: C
 
         {/* Center: Logo + Title + Status dropdown */}
         <div className="mobile-header-center">
-          <GeminiStar size={20} />
-          <span className="mobile-header-title">Private Chat</span>
+        <Image src="/gemini.png" alt="Gemini" width={22} height={22} style={{ objectFit: 'contain' }} />
+          <span className="mobile-header-title">Gemini Flash</span>
           <div className={`mobile-online-dot ${partnerOnline ? 'mobile-online-dot--on' : ''}`} />
           <button
             className="mobile-header-dropdown"
@@ -100,7 +100,7 @@ export default function ChatHeader({ partnerOnline, currentUser, onClearAll }: C
             <polyline points="3 6 5 6 21 6" />
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
           </svg>
-          <span>Delete</span>
+          <span className="delete-btn-label">Delete</span>
         </motion.button>
       </header>
 

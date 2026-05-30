@@ -2,8 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-import GeminiStar from './GeminiStar';
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -48,7 +48,7 @@ export default function LoginForm() {
           transition={{ delay: 0.1, duration: 0.5, type: 'spring', bounce: 0.5 }}
           className="login-star"
         >
-          <GeminiStar size={56} />
+          <Image src="/gemini.png" alt="Gemini" width={64} height={64} style={{ objectFit: 'contain' }} />
         </motion.div>
 
         {/* Title */}
@@ -165,7 +165,7 @@ export default function LoginForm() {
           transition={{ delay: 0.5 }}
           className="login-footer"
         >
-          Private Chat is for personal use only
+          Gemini Flash is for personal use only
         </motion.p>
       </motion.div>
     </div>

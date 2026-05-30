@@ -10,14 +10,19 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Private Chat — Secure Realtime Messaging',
+  title: 'Google Gemini',
   description:
-    'A private, secure realtime messaging application for two users. End-to-end instant messaging with presence indicators, typing notifications, and message history.',
+    'Gemini Flash — private realtime messaging with presence indicators, typing notifications, and message history.',
   robots: 'noindex, nofollow',
+  icons: {
+    icon: '/gemini.png',
+    shortcut: '/gemini.png',
+    apple: '/gemini.png',
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0B0F19',
+  themeColor: '#0a0a0a',
   colorScheme: 'dark',
   width: 'device-width',
   initialScale: 1,

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { UserId } from '@/types/message';
-import GeminiStar from './GeminiStar';
+import Image from 'next/image';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog';
 import { useAuth } from '@/context/AuthContext';
 
@@ -24,8 +24,8 @@ export default function ChatSidebar({ currentUser, partnerOnline, onClearAll }: 
     <aside className="chat-sidebar" aria-label="Navigation sidebar">
       {/* Top: Logo */}
       <div className="sidebar-top">
-        <div className="sidebar-logo" title="Private Chat" aria-label="Private Chat logo">
-          <GeminiStar size={24} />
+        <div className="sidebar-logo" title="Gemini Flash" aria-label="Gemini Flash logo">
+          <Image src="/gemini.png" alt="Gemini" width={26} height={26} style={{ objectFit: 'contain' }} />
         </div>
 
         {/* Edit / New conversation icon */}

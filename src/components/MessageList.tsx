@@ -7,7 +7,7 @@ import type { Message, UserId } from '@/types/message';
 import { formatDateSeparator, isSameDay } from '@/lib/utils';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
-import GeminiStar from './GeminiStar';
+import Image from 'next/image';
 
 interface MessageListProps {
   messages: Message[];
@@ -41,7 +41,7 @@ function EmptyState({ currentUser }: { currentUser: UserId }) {
         transition={{ delay: 0.1, duration: 0.5, type: 'spring', bounce: 0.4 }}
         className="gemini-empty-star"
       >
-        <GeminiStar size={52} />
+        <Image src="/gemini.png" alt="Gemini" width={56} height={56} style={{ objectFit: 'contain' }} />
       </motion.div>
       <motion.h2
         initial={{ opacity: 0, y: 8 }}
