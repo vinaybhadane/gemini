@@ -1,53 +1,34 @@
 'use client';
 
-import { useState, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EmojiPicker from './EmojiPicker';
+import type { Message } from '@/types/message';
 
 interface MessageInputProps {
   onSend: (text: string) => Promise<void>;
   onTyping: () => void;
   onStopTyping: () => void;
   disabled?: boolean;
-}
-
-export interface MessageInputRef {
-  focus: () => void;
-  insertText: (text: string) => void;
+  replyingTo?: Message | null;
+  onCancelReply?: () => void;
 }
 
 const MAX_CHARS = 2000;
 
-const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(({
+export default function MessageInput({
   onSend,
   onTyping,
   onStopTyping,
   disabled = false,
-}, ref) => {
+  replyingTo = null,
+  onCancelReply,
+}: MessageInputProps) {
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const cursorPosRef = useRef<number>(0);
-
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      textareaRef.current?.focus();
-    },
-    insertText: (newText: string) => {
-      setText(prev => {
-        const updated = prev ? `${prev}\n${newText}` : newText;
-        return updated.length > MAX_CHARS ? updated.slice(0, MAX_CHARS) : updated;
-      });
-      setTimeout(() => {
-        textareaRef.current?.focus();
-        if (textareaRef.current) {
-          const len = textareaRef.current.value.length;
-          textareaRef.current.setSelectionRange(len, len);
-        }
-      }, 50);
-    }
-  }));
 
   const autoResize = useCallback(() => {
     const el = textareaRef.current;
@@ -128,6 +109,38 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(({
       <AnimatePresence>
         {showEmoji && (
           <EmojiPicker onSelect={handleEmojiSelect} onClose={() => setShowEmoji(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Reply Banner */}
+      <AnimatePresence>
+        {replyingTo && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            exit={{ opacity: 0, y: 10, height: 0 }}
+            className="reply-banner-wrap"
+          >
+            <div className="reply-banner">
+              <div className="reply-banner-content">
+                <span className="reply-banner-sender">
+                  Replying to {replyingTo.sender === 'user1' ? 'User 1' : 'User 2'}
+                </span>
+                <span className="reply-banner-text">{replyingTo.text}</span>
+              </div>
+              <button
+                type="button"
+                className="reply-banner-close"
+                onClick={onCancelReply}
+                aria-label="Cancel reply"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
@@ -231,6 +244,4 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(({
       </p>
     </div>
   );
-});
-
-export default MessageInput;
+}

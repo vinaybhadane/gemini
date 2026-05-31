@@ -97,6 +97,14 @@ export default function MessageBubble({
               className="msg-bubble msg-bubble--own"
               onContextMenu={(e) => { e.preventDefault(); setShowMenu(true); }}
             >
+              {message.replyTo && (
+                <div className="msg-reply-preview msg-reply-preview--own">
+                  <span className="msg-reply-preview-sender">
+                    {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}
+                  </span>
+                  <span className="msg-reply-preview-text">{message.replyTo.text}</span>
+                </div>
+              )}
               <p className="msg-text">{message.text}</p>
             </div>
           )}
@@ -175,6 +183,14 @@ export default function MessageBubble({
         </p>
       ) : (
         <>
+          {message.replyTo && (
+            <div className="msg-reply-preview msg-reply-preview--other">
+              <span className="msg-reply-preview-sender">
+                {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}
+              </span>
+              <span className="msg-reply-preview-text">{message.replyTo.text}</span>
+            </div>
+          )}
           <p className="msg-text msg-text--other">{message.text}</p>
           {/* Gemini-style action bar below partner messages */}
           <div className="msg-actions-bar">

@@ -22,7 +22,8 @@ const MESSAGES_COLLECTION = 'messages';
 export async function sendMessage(
   sender: UserId,
   receiver: UserId,
-  text: string
+  text: string,
+  replyTo?: { id: string; text: string; sender: UserId }
 ): Promise<void> {
   await addDoc(collection(db, MESSAGES_COLLECTION), {
     sender,
@@ -32,6 +33,7 @@ export async function sendMessage(
     seen: false,
     edited: false,
     deleted: false,
+    ...(replyTo && { replyTo }),
   });
 }
 
