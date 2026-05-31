@@ -137,6 +137,13 @@ export default function MessageBubble({
                       transition={{ duration: 0.15 }}
                       className="msg-context-menu"
                     >
+                      <button role="menuitem" onClick={() => { setShowMenu(false); onReply?.(message); }} className="ctx-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <polyline points="9 17 4 12 9 7" />
+                          <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+                        </svg>
+                        Reply
+                      </button>
                       {canBeEdited && (
                         <button role="menuitem" onClick={handleEdit} className="ctx-item">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
