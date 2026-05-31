@@ -65,12 +65,20 @@ export default function MessageList({
 }: MessageListProps) {
   const listEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isInitialLoad = useRef(true);
   const partner: UserId = currentUser === 'user1' ? 'user2' : 'user1';
   const partnerLabel = partner === 'user1' ? 'User 1' : 'User 2';
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
+
+    if (isInitialLoad.current && messages.length > 0) {
+      listEndRef.current?.scrollIntoView({ behavior: 'auto' });
+      isInitialLoad.current = false;
+      return;
+    }
+
     const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
     if (distFromBottom < 200) {
       listEndRef.current?.scrollIntoView({ behavior: 'smooth' });
