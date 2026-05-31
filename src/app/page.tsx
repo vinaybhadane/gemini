@@ -1,12 +1,14 @@
 'use client';
 
+import { useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import LoginForm from '@/components/LoginForm';
 import ChatHeader from '@/components/ChatHeader';
 import ChatSidebar from '@/components/ChatSidebar';
 import MessageList from '@/components/MessageList';
-import MessageInput from '@/components/MessageInput';
+import MessageInput, { MessageInputRef } from '@/components/MessageInput';
+import type { Message } from '@/types/message';
 import { useMessages } from '@/hooks/useMessages';
 import { usePresence } from '@/hooks/usePresence';
 import { useTyping } from '@/hooks/useTyping';
@@ -15,6 +17,11 @@ function ChatContent({ currentUser }: { currentUser: 'user1' | 'user2' }) {
   const { messages, loading, sendMessage, editMessage, deleteMessage, clearAllMessages } = useMessages(currentUser);
   const { partnerOnline } = usePresence(currentUser);
   const { partnerTyping, onTyping, stopTyping } = useTyping(currentUser);
+  const inputRef = useRef<MessageInputRef>(null);
+
+  const handleReply = useCallback((message: Message) => {
+    inputRef.current?.insertText(`> ${message.text}\n\n`);
+  }, []);
 
   return (
     <motion.div
@@ -40,9 +47,11 @@ function ChatContent({ currentUser }: { currentUser: 'user1' | 'user2' }) {
           partnerTyping={partnerTyping}
           onEdit={editMessage}
           onDelete={deleteMessage}
+          onReply={handleReply}
         />
 
         <MessageInput
+          ref={inputRef}
           onSend={sendMessage}
           onTyping={onTyping}
           onStopTyping={stopTyping}

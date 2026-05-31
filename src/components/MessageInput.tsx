@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EmojiPicker from './EmojiPicker';
 
@@ -11,19 +11,43 @@ interface MessageInputProps {
   disabled?: boolean;
 }
 
+export interface MessageInputRef {
+  focus: () => void;
+  insertText: (text: string) => void;
+}
+
 const MAX_CHARS = 2000;
 
-export default function MessageInput({
+const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(({
   onSend,
   onTyping,
   onStopTyping,
   disabled = false,
-}: MessageInputProps) {
+}, ref) => {
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const cursorPosRef = useRef<number>(0);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      textareaRef.current?.focus();
+    },
+    insertText: (newText: string) => {
+      setText(prev => {
+        const updated = prev ? `${prev}\n${newText}` : newText;
+        return updated.length > MAX_CHARS ? updated.slice(0, MAX_CHARS) : updated;
+      });
+      setTimeout(() => {
+        textareaRef.current?.focus();
+        if (textareaRef.current) {
+          const len = textareaRef.current.value.length;
+          textareaRef.current.setSelectionRange(len, len);
+        }
+      }, 50);
+    }
+  }));
 
   const autoResize = useCallback(() => {
     const el = textareaRef.current;
@@ -207,4 +231,6 @@ export default function MessageInput({
       </p>
     </div>
   );
-}
+});
+
+export default MessageInput;
