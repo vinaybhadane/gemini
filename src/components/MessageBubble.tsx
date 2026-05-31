@@ -10,6 +10,7 @@ interface MessageBubbleProps {
   currentUser: UserId;
   onEdit: (id: string, newText: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
+  onReply?: (message: Message) => void;
   isConsecutive?: boolean;
 }
 
@@ -18,6 +19,7 @@ export default function MessageBubble({
   currentUser,
   onEdit,
   onDelete,
+  onReply,
   isConsecutive = false,
 }: MessageBubbleProps) {
   const isOwn = message.sender === currentUser;
@@ -95,6 +97,14 @@ export default function MessageBubble({
               className="msg-bubble msg-bubble--own"
               onContextMenu={(e) => { e.preventDefault(); setShowMenu(true); }}
             >
+              {message.replyTo && (
+                <div className="msg-reply-preview msg-reply-preview--own">
+                  <span className="msg-reply-preview-sender">
+                    {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}: 
+                  </span>
+                  <span className="msg-reply-preview-text">{message.replyTo.text}</span>
+                </div>
+              )}
               <p className="msg-text">{message.text}</p>
             </div>
           )}
@@ -173,6 +183,14 @@ export default function MessageBubble({
         </p>
       ) : (
         <>
+          {message.replyTo && (
+            <div className="msg-reply-preview msg-reply-preview--other">
+              <span className="msg-reply-preview-sender">
+                {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}: 
+              </span>
+              <span className="msg-reply-preview-text">{message.replyTo.text}</span>
+            </div>
+          )}
           <p className="msg-text msg-text--other">{message.text}</p>
           {/* Gemini-style action bar below partner messages */}
           <div className="msg-actions-bar">
@@ -182,7 +200,7 @@ export default function MessageBubble({
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
               </svg>
             </button>
-            <button className="msg-action-btn" title="Reply" aria-label="Reply to message">
+            <button className="msg-action-btn" title="Reply" aria-label="Reply to message" onClick={() => onReply?.(message)}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="9 17 4 12 9 7" />
                 <path d="M20 18v-2a4 4 0 0 0-4-4H4" />

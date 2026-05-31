@@ -38,9 +38,9 @@ export function useMessages(currentUser: UserId) {
   }, [currentUser, partner]);
 
   const sendMessage = useCallback(
-    async (text: string) => {
+    async (text: string, replyTo?: { id: string; text: string; sender: UserId }) => {
       if (!text.trim()) return;
-      await fbSendMessage(currentUser, partner, text);
+      await fbSendMessage(currentUser, partner, text, replyTo);
     },
     [currentUser, partner]
   );

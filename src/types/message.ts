@@ -11,6 +11,11 @@ export interface Message {
   seen: boolean;
   edited: boolean;
   deleted: boolean;
+  replyTo?: {
+    id: string;
+    text: string;
+    sender: UserId;
+  };
 }
 
 export interface PresenceData {

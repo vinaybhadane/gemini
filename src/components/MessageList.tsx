@@ -16,6 +16,7 @@ interface MessageListProps {
   partnerTyping: boolean;
   onEdit: (id: string, newText: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
+  onReply?: (message: Message) => void;
 }
 
 function DateSeparator({ label }: { label: string }) {
@@ -62,6 +63,7 @@ export default function MessageList({
   partnerTyping,
   onEdit,
   onDelete,
+  onReply,
 }: MessageListProps) {
   const listEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -149,6 +151,7 @@ export default function MessageList({
                 currentUser={currentUser}
                 onEdit={onEdit}
                 onDelete={onDelete}
+                onReply={onReply}
                 isConsecutive={item.isConsecutive}
               />
             )
