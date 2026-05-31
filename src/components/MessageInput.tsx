@@ -124,7 +124,7 @@ export default function MessageInput({
             <div className="reply-banner">
               <div className="reply-banner-content">
                 <span className="reply-banner-sender">
-                  Replying to {replyingTo.sender === 'user1' ? 'User 1' : 'User 2'}
+                  Replying to {replyingTo.sender === 'user1' ? 'User 1' : 'User 2'}: 
                 </span>
                 <span className="reply-banner-text">{replyingTo.text}</span>
               </div>

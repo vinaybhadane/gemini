@@ -100,7 +100,7 @@ export default function MessageBubble({
               {message.replyTo && (
                 <div className="msg-reply-preview msg-reply-preview--own">
                   <span className="msg-reply-preview-sender">
-                    {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}
+                    {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}: 
                   </span>
                   <span className="msg-reply-preview-text">{message.replyTo.text}</span>
                 </div>
@@ -186,7 +186,7 @@ export default function MessageBubble({
           {message.replyTo && (
             <div className="msg-reply-preview msg-reply-preview--other">
               <span className="msg-reply-preview-sender">
-                {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}
+                {message.replyTo.sender === 'user1' ? 'User 1' : 'User 2'}: 
               </span>
               <span className="msg-reply-preview-text">{message.replyTo.text}</span>
             </div>
