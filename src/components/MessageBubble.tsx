@@ -182,6 +182,12 @@ export default function MessageBubble({
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
               </svg>
             </button>
+            <button className="msg-action-btn" title="Reply" aria-label="Reply to message">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polyline points="9 17 4 12 9 7" />
+                <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+              </svg>
+            </button>
             {message.edited && <span className="msg-edited msg-edited--other">Edited</span>}
             <span className="msg-time msg-time--other">{formatTime(message.timestamp)}</span>
           </div>
