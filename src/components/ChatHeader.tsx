@@ -11,9 +11,10 @@ interface ChatHeaderProps {
   partnerOnline: boolean;
   currentUser: UserId;
   onClearAll: () => Promise<void>;
+  onStartVideoCall?: () => void;
 }
 
-export default function ChatHeader({ partnerOnline, currentUser, onClearAll }: ChatHeaderProps) {
+export default function ChatHeader({ partnerOnline, currentUser, onClearAll, onStartVideoCall }: ChatHeaderProps) {
   const { logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -86,22 +87,41 @@ export default function ChatHeader({ partnerOnline, currentUser, onClearAll }: C
           </AnimatePresence>
         </div>
 
-        {/* Right: Red Delete button */}
-        <motion.button
-          id="delete-all-chat-btn"
-          onClick={() => setShowDeleteDialog(true)}
-          whileHover={{ scale: 1.07 }}
-          whileTap={{ scale: 0.93 }}
-          className="delete-all-btn"
-          aria-label="Delete all messages"
-          title="Delete all messages"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <polyline points="3 6 5 6 21 6" />
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-          </svg>
-          <span className="delete-btn-label">Delete</span>
-        </motion.button>
+        {/* Right: Actions */}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {/* Video Call button */}
+          <motion.button
+            onClick={onStartVideoCall}
+            whileHover={{ scale: 1.07 }}
+            whileTap={{ scale: 0.93 }}
+            className="delete-all-btn"
+            style={{ background: '#22c55e', border: '1px solid #16a34a' }}
+            aria-label="Video Call"
+            title="Video Call"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polygon points="23 7 16 12 23 17 23 7" />
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+            </svg>
+          </motion.button>
+
+          {/* Red Delete button */}
+          <motion.button
+            id="delete-all-chat-btn"
+            onClick={() => setShowDeleteDialog(true)}
+            whileHover={{ scale: 1.07 }}
+            whileTap={{ scale: 0.93 }}
+            className="delete-all-btn"
+            aria-label="Delete all messages"
+            title="Delete all messages"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+            </svg>
+            <span className="delete-btn-label">Delete</span>
+          </motion.button>
+        </div>
       </header>
 
       {/* Confirmation dialog */}

@@ -11,9 +11,10 @@ interface ChatSidebarProps {
   currentUser: UserId;
   partnerOnline: boolean;
   onClearAll: () => Promise<void>;
+  onStartVideoCall?: () => void;
 }
 
-export default function ChatSidebar({ currentUser, partnerOnline, onClearAll }: ChatSidebarProps) {
+export default function ChatSidebar({ currentUser, partnerOnline, onClearAll, onStartVideoCall }: ChatSidebarProps) {
   const { logout } = useAuth();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const userLabel = currentUser === 'user1' ? 'U1' : 'U2';
@@ -84,6 +85,14 @@ export default function ChatSidebar({ currentUser, partnerOnline, onClearAll }: 
             <line x1="14" y1="11" x2="14" y2="17" />
           </svg>
         </motion.button>
+
+        {/* Video Call */}
+        <button className="sidebar-icon-btn" title="Video Call" aria-label="Video Call" onClick={onStartVideoCall}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polygon points="23 7 16 12 23 17 23 7" />
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+          </svg>
+        </button>
 
         {/* Settings */}
         <button className="sidebar-icon-btn" title="Settings" aria-label="Settings">

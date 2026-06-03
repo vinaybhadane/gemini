@@ -12,11 +12,14 @@ import type { Message } from '@/types/message';
 import { useMessages } from '@/hooks/useMessages';
 import { usePresence } from '@/hooks/usePresence';
 import { useTyping } from '@/hooks/useTyping';
+import { useWebRTC } from '@/hooks/useWebRTC';
+import VideoCallOverlay from '@/components/VideoCallOverlay';
 
 function ChatContent({ currentUser }: { currentUser: 'user1' | 'user2' }) {
   const { messages, loading, sendMessage, editMessage, deleteMessage, clearAllMessages } = useMessages(currentUser);
   const { partnerOnline } = usePresence(currentUser);
   const { partnerTyping, onTyping, stopTyping } = useTyping(currentUser);
+  const webRTC = useWebRTC(currentUser);
   const [replyingTo, setReplyingTo] = useState<Message | null>(null);
 
   const handleReply = useCallback((message: Message) => {
@@ -44,12 +47,35 @@ function ChatContent({ currentUser }: { currentUser: 'user1' | 'user2' }) {
       className="gemini-layout"
     >
       {/* Desktop sidebar */}
-      <ChatSidebar currentUser={currentUser} partnerOnline={partnerOnline} onClearAll={clearAllMessages} />
+      <ChatSidebar 
+        currentUser={currentUser} 
+        partnerOnline={partnerOnline} 
+        onClearAll={clearAllMessages} 
+        onStartVideoCall={webRTC.startCall}
+      />
 
       {/* Main content */}
       <div className="gemini-main">
         {/* Mobile-only top bar */}
-        <ChatHeader partnerOnline={partnerOnline} currentUser={currentUser} onClearAll={clearAllMessages} />
+        <ChatHeader 
+          partnerOnline={partnerOnline} 
+          currentUser={currentUser} 
+          onClearAll={clearAllMessages} 
+          onStartVideoCall={webRTC.startCall}
+        />
+
+        <VideoCallOverlay
+          callState={webRTC.callState}
+          localStream={webRTC.localStream}
+          remoteStream={webRTC.remoteStream}
+          isMuted={webRTC.isMuted}
+          isVideoOff={webRTC.isVideoOff}
+          onAccept={webRTC.acceptCall}
+          onDecline={webRTC.declineCall}
+          onHangup={webRTC.handleHangup}
+          onToggleMute={webRTC.toggleMute}
+          onToggleVideo={webRTC.toggleVideo}
+        />
 
         <MessageList
           messages={messages}
