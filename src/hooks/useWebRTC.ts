@@ -65,7 +65,10 @@ export function useWebRTC(currentUser: UserId) {
 
     // Register remote stream
     peerConnection.ontrack = (event) => {
-      setRemoteStream(event.streams[0]);
+      if (event.streams && event.streams[0]) {
+        // Create a new MediaStream to ensure React detects the state change
+        setRemoteStream(new MediaStream(event.streams[0].getTracks()));
+      }
     };
 
     pc.current = peerConnection;
